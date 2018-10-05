@@ -1,0 +1,20 @@
+
+language: minimal
+
+branches:
+   only:
+    - master
+
+env:
+ - secure: "Vz7nhyjj6rM0oJy/o2tF1OeyGNjukC4zldHxIUl6vDNBbVAjlSu6xRIJj5xh6/yxv7Dn+G2NVQ2ln7S6i59dlolItLRByYj61ImrSToRuELN/AErpcl+u/T2nfeezz3o4fElSpjIPAJQecFjtDxquvi+6SMYBshkB8t7vhrvqul3FPlO9aL9xfcRcDsJgX32cAwX5AzDWWvqewX45ISBxrcwgc3JpcaodES02Q39fBL0bqtO1XEmB5WF94xFmtt4EH8k25Ew0suqYJ3vy2VH5mksE73wiGQSKjb6CX1zl0zDUIOUabnDkfcrK2/yj9r5Mbm10qe/zjG1D3/TX4zHqxhCiDUIbNiLCzYew03erJ38+f4ojTGeD4DLRIksSIh9122pa08gOOt/4LXLdfoERBA08Or907hp24kfVZkVBy3AX4HG+VSimpTH6r2NvnPisHjsvrVmCd/emQ6SY7ubIG2Y7FOHr3yNxoyhvmpjjTLbFhYTM9USLzwhL1noIfvottSJHEzogxfbN/sLZ/qXGJlCAth0+g7tlQ46BSDIzRG2fVKUfOB1bVQMKFyOxFD29HQlKaThtCK1kmK2HmQ4Fvn4GuMvHNWYqw1YROD4nzkb9/nFJZR5lI87wmg3UNeXEYKt4ZwCxLCaG0LzSLpzcgQie6WFvCgwK0qCFXOmH2Q="
+
+before_install:
+ - openssl aes-256-cbc -K $encrypted_693e1de8c706_key -iv $encrypted_693e1de8c706_iv -in secrets.tar.enc -out secrets.tar -d
+ - tar xf secrets.tar
+
+install: 
+ - sudo apt-get install autoconf automake autotools-dev debhelper debmake devscripts dh-autoreconf dh-make lintian python-paramiko python-pip -qq
+ - sudo pip install -U launchpad-cli
+
+script: ./build
+

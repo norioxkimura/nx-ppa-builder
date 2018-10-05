@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -eu
+
+url="$1"
+dist="$2"
+
+dget -u "$url"
+cd */
+dch -l".${dist}.ppa" ''
+dch -r -D "$dist" ''
+

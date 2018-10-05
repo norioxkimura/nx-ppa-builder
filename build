@@ -1,0 +1,63 @@
+#!/bin/bash
+
+set -eu
+
+gpg --import key
+
+mkdir -p -m 0700 ~/.ssh
+mv -f id_rsa ~/.ssh
+
+cat <<^Z > ~/.dput.cf
+[ppa]
+fqdn			= ppa.launchpad.net
+method			= sftp
+incoming		= ~%(ppa)s
+login			= ${LAUNCHPAD_USERNAME}
+^Z
+
+ssh-keyscan -H ppa.launchpad.net >> ~/.ssh/known_hosts
+
+build_deploy () {
+    local dir dist
+    dir="$1"
+    archive="$dir"
+    url="ppa:${LAUNCHPAD_USERNAME}/${archive}"
+    if ! lpad ppa ls "$url" > /dev/null 2>&1; then
+        echo "***"
+        echo "*!* Prepare PPA archive '$url' first!"
+        echo "***"
+        exit 1
+    fi
+    cd "$dir"
+    for dist in *; do
+        if [[ -x "$dist" ]]; then
+            mkdir "${dist}.d"
+            cd "${dist}.d"
+            ../$dist
+            cd */
+            src="$(dpkg-parsechangelog -S'source')"
+            version="$(dpkg-parsechangelog -S'version')"
+            series="$(dpkg-parsechangelog -S'distribution')"
+            if [[ "$(lpad ppa ls --series "$series" "${url}/${src}" 2> /dev/null | awk '{print $2}')" == "$version" ]]; then
+                echo "Skip build and deploy: $series $src $version"
+                cd ../..
+                continue
+            fi
+            debuild -S -sa -us -uc
+            cd ..
+            debsign -p"gpg --passphrase $PASSPHRASE --batch --no-use-agent" -S                  \
+                    -k"$(gpg -k --with-colons F5F7E0BC | awk -F: '/^pub:/{print $5}')"          \
+                    *.changes
+            dput -f "$url" *.changes
+            cd ..
+        fi
+    done
+    cd ..
+}
+
+for d in ppa-*; do
+    if [[ -d "$d" ]]; then
+        build_deploy "$d"
+    fi
+done
+
