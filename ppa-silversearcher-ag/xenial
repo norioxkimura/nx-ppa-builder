@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -eu
+
+this_dir="$(cd "$(dirname "$0")" && pwd)"
+dist="$(basename "$0")"
+
+dget -u 'http://http.debian.net/debian/pool/main/s/silversearcher-ag/silversearcher-ag_2.1.0-1.dsc'
+cd */
+patch -p1 < ../../patch.diff
+dch -l".${dist}.ppa" ''
+dch -i -U ''
+dch -r -D "$dist" ''
+
