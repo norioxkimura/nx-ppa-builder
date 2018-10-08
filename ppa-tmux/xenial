@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -eu
+
+this_dir="$(cd "$(dirname "$0")" && pwd)"
+dist="$(basename "$0")"
+
+dget -u 'http://http.debian.net/debian/pool/main/t/tmux/tmux_2.7-1.dsc'
+cd */
+patch -p1 < ../../patch.diff
+dch -l".${dist}.ppa" ''
+dch -r -D "$dist" ''
+
