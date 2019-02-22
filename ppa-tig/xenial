@@ -5,5 +5,5 @@ set -eu
 this_dir="$(cd "$(dirname "$0")" && pwd)"
 dist="$(basename "$0")"
 
-"$this_dir/../prepare" 'http://http.debian.net/debian/pool/main/t/tig/tig_2.3.0-1.dsc' "$dist"
+"$this_dir/../prepare" 'http://deb.debian.org/debian/pool/main/t/tig/tig_2.4.1-1.dsc' "$dist"
 
