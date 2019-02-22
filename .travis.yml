@@ -14,7 +14,7 @@ before_install:
  - tar xf secrets.tar
 
 install: 
- - sudo apt-get install autoconf automake autotools-dev debhelper debmake devscripts dh-autoreconf dh-make lintian python-paramiko python-pip -qq
+ - sudo apt-get install autoconf automake autotools-dev debhelper debmake devscripts dh-autoreconf dh-make lintian libdistro-info-perl python-paramiko python-pip -qq
  - sudo pip install -U launchpad-cli
 
 script: ./build
