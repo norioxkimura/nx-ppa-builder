@@ -1,8 +1,0 @@
-#!/bin/bash
-
-set -eu
-
-this_dir="$(cd "$(dirname "$0")" && pwd)"
-
-"$this_dir/../prepare" 'http://http.debian.net/debian/pool/main/g/golang-defaults/golang-defaults_1.10~5.dsc' xenial
-
