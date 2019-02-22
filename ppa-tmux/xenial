@@ -5,9 +5,10 @@ set -eu
 this_dir="$(cd "$(dirname "$0")" && pwd)"
 dist="$(basename "$0")"
 
-dget -u 'http://http.debian.net/debian/pool/main/t/tmux/tmux_2.7-1.dsc'
+dget -u 'http://deb.debian.org/debian/pool/main/t/tmux/tmux_2.8-3.dsc'
 cd */
 patch -p1 < ../../patch.diff
+dch -l".${dist}.ppa" ''
 dch -l".${dist}.ppa" ''
 dch -r -D "$dist" ''
 
