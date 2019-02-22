@@ -4,5 +4,5 @@ set -eu
 
 this_dir="$(cd "$(dirname "$0")" && pwd)"
 
-"$this_dir/../prepare" 'http://http.debian.net/debian/pool/main/g/golang-defaults/golang-defaults_1.10~5.dsc' xenial
+"$this_dir/../prepare" 'http://deb.debian.org/debian/pool/main/g/golang-defaults/golang-defaults_1.11~1.dsc' xenial
 
